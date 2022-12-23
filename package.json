@@ -1,0 +1,25 @@
+{
+  "name": "chatgpt-slackbot",
+  "version": "0.0.2",
+  "description": "Slack bot for ChatGPT",
+  "author": "ayk24 <aueyama@kanolab.net>",
+  "main": "app.ts",
+  "scripts": {
+    "start": "npx tsx src/main.ts",
+    "test": "eslint src/*.ts"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.12.2",
+    "chatgpt": "^3.3.2",
+    "dotenv-safe": "^8.2.0",
+    "puppeteer": "^19.4.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "eslint": "^8.30.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

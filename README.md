@@ -29,7 +29,7 @@ This application uses the [transitive-bullshit/chatgpt-api](https://github.com/t
 ### Setup your app
 1. Copy `.env.example` to create `.env` and enter the information
     ```
-    cp .env.sample .env
+    cp .env.example .env
     ```
     - `OPENAI_EMAIL`: Email address of your OpenAI account
     - `OPENAI_PASSWORD`: Password of your OpenAI account

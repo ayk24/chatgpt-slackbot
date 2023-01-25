@@ -34,7 +34,6 @@ export class Instance {
                     conv.parentMessageId = "";
                     await say("<@" + event.user + ">\n" + "Reset dialogue history!");
                 } else {
-                    console.log(question)
                     const chatResponse = await api.sendMessage(question, {
                         conversationId: conv.conversationId,
                         parentMessageId: conv.parentMessageId,

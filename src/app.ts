@@ -27,24 +27,33 @@ export class Instance {
 
         app.event("app_mention", async ({ event, say }) => {
             try {
-                const question = event.text.replace(/(?:\s)<@[^, ]*|(?:^)<@[^, ]*/, "");
+                const question = event.text.replace(/<@[A-Za-z0-9]+>/g, "").trim();
 
                 if (question.includes("reset-thread")) {
                     conv.conversationId = "";
                     conv.parentMessageId = "";
                     await say("<@" + event.user + ">\n" + "Reset dialogue history!");
                 } else {
+                    console.log(question)
                     const chatResponse = await api.sendMessage(question, {
                         conversationId: conv.conversationId,
                         parentMessageId: conv.parentMessageId,
                     })
-                    conv.conversationId = chatResponse.conversationId;
-                    conv.parentMessageId = chatResponse.messageId;
+
+                    if (chatResponse.conversationId) {
+                        conv.conversationId = chatResponse.conversationId;
+                    }
+
+                    if (chatResponse.conversationId) {
+                        conv.parentMessageId = chatResponse.messageId;
+                    }
+
                     console.log("[INFO] chatgpt-%s Q: %s, A: %s", conv.conversationId, event.text, chatResponse.response);
                     await say("<@" + event.user + ">\n" + chatResponse.response);
                 }
             } catch (error) {
                 console.error(error);
+                await say("<@" + event.user + ">\n" + "Error: Too many requests. Try again later.");
             }
         });
     }

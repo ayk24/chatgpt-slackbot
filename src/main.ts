@@ -1,5 +1,5 @@
-import { createInstance } from "./app";
-import dotenv from "dotenv";
+import { createInstance } from './app';
+import dotenv from 'dotenv';
 dotenv.config();
 
 (async () => {
@@ -8,7 +8,7 @@ dotenv.config();
         String(process.env.OPENAI_PASSWORD),
         String(process.env.SLACK_APP_TOKEN),
         String(process.env.SLACK_BOT_TOKEN),
-        String(process.env.SLACK_SIGNING_SECRET),
+        String(process.env.SLACK_SIGNING_SECRET)
     );
     await instance.start();
 })();

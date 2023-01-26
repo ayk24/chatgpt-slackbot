@@ -1,6 +1,6 @@
-import { App } from "@slack/bolt";
-import { ChatGPTAPIBrowser } from "chatgpt";
-import { Conversation } from "./interface";
+import { App } from '@slack/bolt';
+import { ChatGPTAPIBrowser } from 'chatgpt';
+import { Conversation } from './interface';
 
 export class Instance {
     api: ChatGPTAPIBrowser;
@@ -17,7 +17,7 @@ export class Instance {
     public async start() {
         await this.api.initSession();
         await this.app.start();
-        console.log("[INFO] ⚡️ ChatGPT Bot app is running at port 4000");
+        console.log('[INFO] ⚡️ ChatGPT Bot app is running at port 4000');
     }
 
     private setup() {
@@ -25,19 +25,19 @@ export class Instance {
         const app = this.app;
         const conv = this.conv;
 
-        app.event("app_mention", async ({ event, say }) => {
+        app.event('app_mention', async ({ event, say }) => {
             try {
-                const question = event.text.replace(/<@[A-Za-z0-9]+>/g, "").trim();
+                const question = event.text.replace(/<@[A-Za-z0-9]+>/g, '').trim();
 
-                if (question.includes("reset-thread")) {
-                    conv.conversationId = "";
-                    conv.parentMessageId = "";
-                    await say("<@" + event.user + ">\n" + "Reset dialogue history!");
+                if (question.includes('reset-thread')) {
+                    conv.conversationId = '';
+                    conv.parentMessageId = '';
+                    await say('<@' + event.user + '>\n' + 'Reset dialogue history!');
                 } else {
                     const chatResponse = await api.sendMessage(question, {
                         conversationId: conv.conversationId,
                         parentMessageId: conv.parentMessageId,
-                    })
+                    });
 
                     if (chatResponse.conversationId) {
                         conv.conversationId = chatResponse.conversationId;
@@ -47,18 +47,29 @@ export class Instance {
                         conv.parentMessageId = chatResponse.messageId;
                     }
 
-                    console.log("[INFO] chatgpt-%s Q: %s, A: %s", conv.conversationId, event.text, chatResponse.response);
-                    await say("<@" + event.user + ">\n" + chatResponse.response);
+                    console.log(
+                        '[INFO] chatgpt-%s Q: %s, A: %s',
+                        conv.conversationId,
+                        event.text,
+                        chatResponse.response
+                    );
+                    await say('<@' + event.user + '>\n' + chatResponse.response);
                 }
             } catch (error) {
                 console.error(error);
-                await say("<@" + event.user + ">\n" + "Error: Too many requests. Try again later.");
+                await say('<@' + event.user + '>\n' + 'Error: Too many requests. Try again later.');
             }
         });
     }
 }
 
-export const createInstance = (email: string, password: string, appToken: string, botToken: string, signingSecret: string): Instance => {
+export const createInstance = (
+    email: string,
+    password: string,
+    appToken: string,
+    botToken: string,
+    signingSecret: string
+): Instance => {
     const api = new ChatGPTAPIBrowser({
         email: email,
         password: password,
@@ -72,9 +83,9 @@ export const createInstance = (email: string, password: string, appToken: string
     });
 
     const conv = <Conversation>{
-        conversationID: "",
-        parentMessaegeID: "",
-    }
+        conversationID: '',
+        parentMessaegeID: '',
+    };
 
     return new Instance(api, app, conv);
-}
+};
